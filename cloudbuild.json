@@ -1,0 +1,16 @@
+{
+ "steps": [
+  {
+     "name": "gcr.io/cloud-builders/gcloud",
+     "args": [
+       "functions",
+       "deploy",
+        [
+          "display-image-resize"
+        ],
+        "--source=.",
+        "--trigger-http"
+     ]
+   }
+  ]
+}

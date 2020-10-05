@@ -4,6 +4,6 @@ steps:
       'functions',
       'deploy','hello_world',
       '--region=us-west3',
-      '--source=https://source.developers.google.com/p/kaushik-virtusa-project/r/github_kaushik-h_cloud-function',
+      '--source=https://source.developers.google.com/projects/kaushik-virtusa-project/repos/cloud-function/moveable-aliases/master/paths/',
       '--trigger-http',
   ]

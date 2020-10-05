@@ -3,7 +3,7 @@ steps:
   args: [
       'functions',
       'deploy','hello_world',
-      '--region=us-west3'
+      '--region=us-west3',
       '--source=https://https://github.com/Kaushik-h/cloud-function/',
       '--trigger-http',
   ]

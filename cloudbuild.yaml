@@ -4,6 +4,6 @@ steps:
       'functions',
       'deploy','hello_world',
       '--region=us-west3',
-      '--source=https://https://github.com/Kaushik-h/cloud-function/',
+      '--source=https://github.com/Kaushik-h/cloud-function/',
       '--trigger-http',
   ]

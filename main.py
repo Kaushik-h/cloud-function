@@ -4,7 +4,7 @@ from flask import render_template_string
 INDEX_TEMPLATE = """
 <!DOCTYPE html>
 <head>
-  <title>Changes</title>
+  <title>Api gateway</title>
 </head>
 <body>
     <br><br><br>

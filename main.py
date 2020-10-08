@@ -1,25 +1,39 @@
 from google.cloud import firestore
 from flask import render_template_string
+from datetime import datetime
+from twilio.rest import Client
+
+
 
 INDEX_TEMPLATE = """
 <!DOCTYPE html>
 <head>
-  <title>Api gateway and img size</title>
+  <title>Api gateway</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans" rel="stylesheet">
+
 </head>
 <body>
     <br><br><br>
-  <center>
-  <img src="https://storage.googleapis.com/favicon/GOOGLE.COM" style="padding: 40px;">
-  <img src="https://storage.googleapis.com/resize-favicon/GOOGLE.COM" style="padding: 40px;">
+  <center style="font-family: 'Google Sans', sans-serif;">
+  <h2>Domains expiring in less than a year</h2><br><br>
+  Message sent to +918807570687<br><br><br>
+  Domain:{result[0]}<br>
+  <img src="https://storage.googleapis.com/favicon/{result[0]}" style="padding: 40px;">
+  <img src="https://storage.googleapis.com/resize-favicon/{result[0]}" style="padding: 40px;">
   <br><br><br>
-  <img src="https://storage.googleapis.com/favicon/AMAZON.COM" style="padding: 40px;">
-  <img src="https://storage.googleapis.com/resize-favicon/AMAZON.COM" style="padding: 40px;">
+  Domain:{result[1]}<br>
+  <img src="https://storage.googleapis.com/favicon/{result[1]}" style="padding: 40px;">
+  <img src="https://storage.googleapis.com/resize-favicon/{result[1]}" style="padding: 40px;">
   <br><br><br>
-  <img src="https://storage.googleapis.com/favicon/COURSERA.ORG" style="padding: 40px;">
-  <img src="https://storage.googleapis.com/resize-favicon/COURSERA.ORG" style="padding: 40px;">
+  Domain:{result[2]}<br>
+  <img src="https://storage.googleapis.com/favicon/{result[2]}" style="padding: 40px;">
+  <img src="https://storage.googleapis.com/resize-favicon/{result[2]}" style="padding: 40px;">
   <br><br><br>
-  <img src="https://storage.googleapis.com/favicon/INSTAGRAM.COM" style="padding: 40px;">
-  <img src="https://storage.googleapis.com/resize-favicon/INSTAGRAM.COM" style="padding: 40px;">
+  Domain:{result[3]}<br>
+  <img src="https://storage.googleapis.com/favicon/{result[3]}" style="padding: 40px;">
+  <img src="https://storage.googleapis.com/resize-favicon/{result[3]}" style="padding: 40px;">
+  <br><br><br>
+
   </center>
 </body>
 """
@@ -41,6 +55,21 @@ def hello_world(request):
     for d in domains:
         alldomains.append(d.to_dict())
 
+    result=[]
+    message=""
+    for l in alldomains:
+        temp=l["Expires on"]
+        temp=temp.split("at")[0]
+        d=datetime.strptime(temp,"%B %m %Y ")
+        exp=d-datetime.now()
+        if exp.days<=365:
+            result.append(l["Domain Name"]) 
+            message += "The domain "+l["Domain Name"]+" expires in "+str(exp.days)+" days\n"
+             
+    client = Client("AC2973c1c7bd119b224e916fbc556eae11", "96e2c7f4030476478cd85eb512362d33")
+    client.messages.create(to="+918807570687", 
+                       from_="+17602845386", 
+                       body=message)
     request_json = request.get_json()
     
     if request.args and 'message' in request.args:
@@ -48,5 +77,4 @@ def hello_world(request):
     elif request_json and 'message' in request_json:
         return request_json['message']
     else:
-        return INDEX_TEMPLATE
-
+        return INDEX_TEMPLATE.format(result=result)
